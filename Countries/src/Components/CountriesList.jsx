@@ -1,36 +1,43 @@
-import { useEffect, useState } from "react";
-// import CountriesData from "../CountriesData";
-import CountryCard from "./CountryCard";
-// import { useState } from "react";
+import React, { useEffect, useState } from 'react'
+// import countriesData from '../countriesData'
+import CountryCard from './CountryCard'
+import CountriesListShimmer from './CountriesListShimmer'
 
 export default function CountriesList({ value }) {
-  const [CountryData, setCountryData] = useState([]);
+  const [countriesData, setCountriesData] = useState([])
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
+    fetch('https://restcountries.com/v3.1/all')
       .then((res) => res.json())
       .then((data) => {
-        setCountryData(data);
-      });
-  }, []);
+        setCountriesData(data)
+      })
+  }, [])
 
-  const filteredCountries = CountryData.filter((country) =>
-    country.name.common.toLowerCase().includes(value)
-  );
+  if (!countriesData.length) {
+    return <CountriesListShimmer />
+  }
+
   return (
-    <div className="countries-container">
-      {filteredCountries.map((country) => {
-        return (
-          <CountryCard
-            key={country.name.common}
-            name={country.name.common}
-            flag={country.flags.svg}
-            population={country.population}
-            region={country.region}
-            capital={country.capital?.[0]}
-          />
-        );
-      })}
-    </div>
-  );
+    <>
+      <div className="countries-container">
+        {countriesData
+          .filter((country) =>
+            country.name.common.toLowerCase().includes(value)
+          )
+          .map((country) => {
+            return (
+              <CountryCard
+                key={country.name.common}
+                name={country.name.common}
+                flag={country.flags.svg}
+                population={country.population}
+                region={country.region}
+                capital={country.capital?.[0]}
+              />
+            )
+          })}
+      </div>
+    </>
+  )
 }

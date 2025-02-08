@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./CountryDetail.css";
 
@@ -25,16 +26,48 @@ export default function CountryDetail() {
           currencies: Object.values(data.currencies)
             .map((currency) => currency.name)
             .join(", "),
-        });
+          borders: [],
+        })
+
+
+        // data.borders.map((border) => {
+        //    fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+        //     .then((res) => res.json())
+        //     .then(([borderCountry]) => {
+        //       console.log(borderCountry.name.common);
+        //       setCountryData((prevState) => ({
+        //         ...prevState,
+        //         borders: [...prevState.borders, borderCountry.name.common]
+        //       }));
+        //     });
+        // });
+
+        if(!data.borders) {
+          data.borders = []
+        }
+
+        Promise.all(data.borders.map((border) => {
+          return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+          .then((res) => res.json())
+          .then(([borderCountry]) => borderCountry.name.common)
+        })).then((borders) => {
+          setCountryData((prevState) => ({...prevState, borders }))
+        })
+
       });
-  }, []);
+  }, [countryName]);
 
   return countryData === null ? (
     "loading..."
   ) : (
     <main>
       <div className="country-details-container">
-        <span className="back-button" onClick={()=>{history.back()}}>
+        <span
+          className="back-button"
+          onClick={() => {
+            history.back();
+          }}
+        >
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back
         </span>
         <div className="country-details">
@@ -79,6 +112,11 @@ export default function CountryDetail() {
             </div>
             <div className="border-countries">
               <b>Border Countries: </b>&nbsp;
+              {countryData.borders.map((border, index) => (
+                <Link key={index} to={`/${border}`}>
+                  {border}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
