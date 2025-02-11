@@ -34,6 +34,7 @@ export default function CountriesList({ value }) {
                 population={country.population}
                 region={country.region}
                 capital={country.capital?.[0]}
+                data={country}
               />
             )
           })}
