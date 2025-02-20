@@ -1,2 +1,2 @@
 # Projects
-This repo contains all of my projects of FrontEnd technology
+This repo contains all of my projects of Frontend technology
