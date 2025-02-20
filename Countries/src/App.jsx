@@ -1,15 +1,14 @@
 import {Outlet} from 'react-router-dom'
 import Header from './Components/Header.jsx'
 import { useState } from 'react';
+import {ThemeProvider } from '../contexts/ThemeContext.jsx';
 // import "./App.css";
 
 export default function App() {
-  const [isDark,setIsDark] = useState(JSON.parse(localStorage.getItem('isDarkMode')))
-
   return (
-    <>
-      <Header theme={[isDark,setIsDark]} />
-      <Outlet context={[isDark]}/>
-    </>
+    <ThemeProvider>
+      <Header/>
+      <Outlet/>
+    </ThemeProvider>
   );
 }
