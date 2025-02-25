@@ -23,7 +23,7 @@ export default function CountriesList({ value }) {
       <div className="countries-container">
         {countriesData
           .filter((country) =>
-            country.name.common.toLowerCase().includes(value)
+            country.name.common.toLowerCase().includes(value) || country.region.toLowerCase().includes(value)
           )
           .map((country) => {
             return (
