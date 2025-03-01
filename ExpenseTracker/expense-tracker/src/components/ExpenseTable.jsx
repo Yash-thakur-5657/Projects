@@ -8,7 +8,7 @@ export default function expenseTable({ expenses }) {
           <th>Title</th>
           <th>
             <select>
-              <option value="">All</option>
+              <option value="" hidden >All</option>
               <option value="grocery">Grocery</option>
               <option value="clothes">Clothes</option>
               <option value="bills">Bills</option>
@@ -43,7 +43,6 @@ export default function expenseTable({ expenses }) {
       </thead>
       <tbody>
         {expenses.map(({ id, title, category, amount }) => (
-          // console.log(id,title,category,amount);
           <tr key={id}>
             <td>{title}</td>
             <td>{category}</td>
