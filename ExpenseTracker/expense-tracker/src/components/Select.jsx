@@ -9,6 +9,7 @@ export default function Select({
   options,
   defaultOption,
   error,
+  filterOption,
 }) {
   return (
     <div className="input-container">
