@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-export default function ExpenseForm({setExpenses}) {
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: "",
-    email: "",
-  });
-
- 
-
+export default function ExpenseForm({
+  setExpenses,
+  setExpense,
+  expense,
+  buttonValue,
+  setButtonValue,
+  updatedExpense,
+  rowId,
+}) {
   const [errors, setErrors] = useState({});
 
   const validationConfig = {
@@ -20,7 +19,7 @@ export default function ExpenseForm({setExpenses}) {
       { minLength: 5, message: "Title should be at least 5 characters long" },
     ],
     category: [{ required: true, message: "Please select a category" }],
-    amount: [{ required: true, message: "Please enter an amount" }],
+    amount: [{ required: true, message: "Please enter an amount"}],
     email: [
       { required: true, message: "Please enter an email" },
       {
@@ -33,9 +32,8 @@ export default function ExpenseForm({setExpenses}) {
   const validate = (formData) => {
     const errorsData = {};
 
-    console.log(formData);
-
-    console.log(Object.entries(formData));
+    // console.log(formData);
+    // console.log(Object.entries(formData));
 
     Object.entries(formData).forEach(([key, value]) => {
       validationConfig[key].some((rule) => {
@@ -69,10 +67,21 @@ export default function ExpenseForm({setExpenses}) {
 
     if (Object.keys(validateResult).length) return;
 
-    setExpenses((prevState) => [
-      ...prevState,
-      { ...expense, id: crypto.randomUUID() },
-    ]);
+    if (buttonValue === "Save") {
+      setExpenses((prevState) => {
+        const item = prevState.find((obj) => obj.id === rowId);
+        item.title = expense.title;
+        item.category = expense.category;
+        item.amount = expense.amount;
+        return prevState;
+      });
+      setButtonValue("Add");
+    } else {
+      setExpenses((prevState) => [
+        ...prevState,
+        { ...expense, id: crypto.randomUUID() },
+      ]);
+    }
     setExpense({
       title: "",
       category: "",
@@ -83,7 +92,6 @@ export default function ExpenseForm({setExpenses}) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(typeof filterOption);
     setExpense((prevState) => ({
       ...prevState,
       [name]: value,
@@ -127,7 +135,7 @@ export default function ExpenseForm({setExpenses}) {
         onChange={handleChange}
         error={errors.email}
       />
-      <button className="add-btn">Add</button>
+      <button className="add-btn">{buttonValue}</button>
     </form>
   );
 }

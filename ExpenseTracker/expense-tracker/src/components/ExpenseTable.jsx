@@ -1,9 +1,18 @@
 import { useState } from "react";
 import ContextMenu from "./ContextMenu";
 
-export default function expenseTable({ expenses,setExpenses,setId,rowId }) {
+export default function expenseTable({
+  expenses,
+  setExpenses,
+  setId,
+  rowId,
+  setExpense,
+  setButtonValue,
+  setUpdatedExpense,
+}) {
   const [filterOption, setFilterOption] = useState("");
   const [menuPosition, setMenuPosition] = useState({});
+  // const [editObject,setEditObject] = useState({});
 
   let totalAmount = 0;
   expenses
@@ -14,10 +23,22 @@ export default function expenseTable({ expenses,setExpenses,setId,rowId }) {
 
   return (
     <>
-      <ContextMenu menuPosition={menuPosition} setMenuPosition={setMenuPosition} setExpenses={setExpenses} rowId={rowId}/>      
-      <table className="expense-table" onClick={(e)=>{
-        setMenuPosition({});
-      }}>
+      <ContextMenu
+        menuPosition={menuPosition}
+        setMenuPosition={setMenuPosition}
+        expenses={expenses}
+        setExpenses={setExpenses}
+        rowId={rowId}
+        setExpense={setExpense}
+        setButtonValue={setButtonValue}
+        setUpdatedExpense={setUpdatedExpense}
+      />
+      <table
+        className="expense-table"
+        onClick={(e) => {
+          setMenuPosition({});
+        }}
+      >
         <thead>
           <tr>
             <th>Title</th>
