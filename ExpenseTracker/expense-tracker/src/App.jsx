@@ -18,9 +18,6 @@ function App() {
     email: "",
   });
 
-  const [localData, setLocalData] = useLocalStorage("hello",[1,2,3,4]);
-  console.log(localData);
-
   return (
     <>
       <main>
