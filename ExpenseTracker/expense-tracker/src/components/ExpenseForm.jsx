@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
-
+import localData from "./useLocalStorage";
 export default function ExpenseForm({
+  expenses,
   setExpenses,
   setExpense,
   expense,
   buttonValue,
   setButtonValue,
-  updatedExpense,
   rowId,
 }) {
   const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ export default function ExpenseForm({
       { minLength: 5, message: "Title should be at least 5 characters long" },
     ],
     category: [{ required: true, message: "Please select a category" }],
-    amount: [{ required: true, message: "Please enter an amount"}],
+    amount: [{ required: true, message: "Please enter an amount" }],
     email: [
       { required: true, message: "Please enter an email" },
       {
@@ -42,7 +42,7 @@ export default function ExpenseForm({
           return true;
         }
 
-        if (rule.minLength && value.length < 5) {
+        if (rule.minLength && value.length < 3) {
           errorsData[key] = rule.message;
           return true;
         }
@@ -81,6 +81,7 @@ export default function ExpenseForm({
         ...prevState,
         { ...expense, id: crypto.randomUUID() },
       ]);
+      localData.set("expenses", expenses);
     }
     setExpense({
       title: "",
